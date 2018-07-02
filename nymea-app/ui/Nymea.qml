@@ -70,6 +70,9 @@ ApplicationWindow {
 
     function init() {
         print("calling init. Auth required:", Engine.jsonRpcClient.authenticationRequired, "initial setup required:", Engine.jsonRpcClient.initialSetupRequired, "jsonrpc connected:", Engine.jsonRpcClient.connected)
+        notificationClient.notification = "User is happy!"
+        print("displayed notification")
+
         pageStack.clear()
         if (!Engine.connection.connected) {
             pageStack.push(Qt.resolvedUrl("ConnectPage.qml"))

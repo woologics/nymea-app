@@ -27,6 +27,7 @@
 
 #ifdef Q_OS_ANDROID
 #include <QtAndroidExtras/QtAndroid>
+#include "notificationclient.h"
 #endif
 
 #include "libnymea-app-core.h"
@@ -85,6 +86,10 @@ int main(int argc, char *argv[])
     application.setWindowIcon(QIcon(QString(":/styles/%1/logo.svg").arg(styleController.currentStyle())));
 
     engine->load(QUrl(QLatin1String("qrc:/ui/Nymea.qml")));
+
+#ifdef Q_OS_ANDROID
+    engine->rootContext()->setContextProperty("notificationClient", new NotificationClient(&application));
+#endif
 
 #ifdef Q_OS_ANDROID
     QtAndroid::hideSplashScreen(250);

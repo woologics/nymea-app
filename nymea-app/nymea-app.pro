@@ -16,10 +16,10 @@ linux:!android:LIBS += -lavahi-client -lavahi-common
 PRE_TARGETDEPS += ../libnymea-app-core ../libnymea-common
 
 HEADERS += \
-    stylecontroller.h
+    stylecontroller.h \
 
 SOURCES += main.cpp \
-    stylecontroller.cpp
+    stylecontroller.cpp \
 
 OTHER_FILES += $$files(*.qml, true)
 
@@ -42,6 +42,10 @@ android {
 
     QT += androidextras
 
+    HEADERS += notificationclient.h
+
+    SOURCES += notificationclient.cpp
+
     DISTFILES += \
         $$ANDROID_PACKAGE_SOURCE_DIR/AndroidManifest.xml \
         $$ANDROID_PACKAGE_SOURCE_DIR/gradle/wrapper/gradle-wrapper.jar \
@@ -50,7 +54,8 @@ android {
         $$ANDROID_PACKAGE_SOURCE_DIR/build.gradle \
         $$ANDROID_PACKAGE_SOURCE_DIR/gradle/wrapper/gradle-wrapper.properties \
         $$ANDROID_PACKAGE_SOURCE_DIR/gradlew.bat \
-        $$ANDROID_PACKAGE_SOURCE_DIR/LICENSE
+        $$ANDROID_PACKAGE_SOURCE_DIR/LICENSE \
+        $$ANDROID_PACKAGE_SOURCE_DIR/src/io/guh/nymeaapp/notification/NotificationClient.java
 }
 
 macx: {
