@@ -33,7 +33,34 @@ Item {
             width: gridView.cellWidth
             height: gridView.cellHeight
             text: device.name.toUpperCase()
-            iconName: app.interfacesToIcon(deviceClass.interfaces)
+            iconName: {
+                if (deviceClass.interfaces.indexOf("garagegate") >= 0) {
+                    var stateState = device.states.getState(deviceClass.stateTypes.findByName("state").id)
+                    var intermediateState = device.states.getState(deviceClass.stateTypes.findByName("intermediatePosition").id)
+                    if (stateState.value === "closed") {
+                        return Qt.resolvedUrl("../images/shutter/shutter-100.svg")
+                    } else if (intermediateState.value === false) {
+                        return Qt.resolvedUrl("../images/shutter/shutter-000.svg")
+                    } else {
+                        return Qt.resolvedUrl("../images/shutter/shutter-050.svg")
+                    }
+                }
+                if (deviceClass.interfaces.indexOf("weather") >= 0) {
+                    var weatherConditionState = device.states.getState(deviceClass.stateTypes.findByName("weatherCondition").id)
+                    return Qt.resolvedUrl("../images/weathericons/weather-" + weatherConditionState.value + ".svg")
+                }
+                if (deviceClass.interfaces.indexOf("light") >= 0) {
+                    var powerState = device.states.getState(deviceClass.stateTypes.findByName("power").id)
+                    if (powerState.value === true) {
+                        return Qt.resolvedUrl("../images/light-on.svg")
+                    } else {
+                        return Qt.resolvedUrl("../images/light-off.svg")
+                    }
+                }
+
+
+                return app.interfacesToIcon(deviceClass.interfaces)
+            }
             iconColor: app.guhAccent
             visible: !fakeDragItem.visible || fakeDragItem.deviceId !== device.id
             batteryCritical: batteryCriticalState && batteryCriticalState.value === true
@@ -174,6 +201,9 @@ Item {
             property var device: null
             property var deviceClass: null
 
+            readonly property var powerStateType: deviceClass.stateTypes.findByName("power");
+            readonly property var powerState: device.states.getState(powerStateType.id)
+
             ItemDelegate {
                 Layout.preferredWidth: app.iconSize
                 Layout.preferredHeight: app.iconSize
@@ -182,7 +212,7 @@ Item {
                 padding: 0; topPadding: 0; bottomPadding: 0
                 contentItem: ColorIcon {
                     name: "../images/light-off.svg"
-                    color: app.guhAccent
+                    color: powerState.value === false ? app.guhAccent : keyColor
                 }
                 onClicked: {
                     var deviceClass = Engine.deviceManager.deviceClasses.getDeviceClass(device.deviceClassId);
@@ -225,7 +255,7 @@ Item {
                 padding: 0; topPadding: 0; bottomPadding: 0
                 contentItem: ColorIcon {
                     name: "../images/light-on.svg"
-                    color: app.guhAccent
+                    color: powerState.value === true ? app.guhAccent : keyColor
                 }
                 onClicked: {
                     var deviceClass = Engine.deviceManager.deviceClasses.getDeviceClass(device.deviceClassId);
@@ -310,7 +340,7 @@ Item {
                 Layout.preferredHeight: width
                 Layout.alignment: Qt.AlignVCenter
                 color: app.interfaceToColor(sensorsRoot.shownInterfaces[sensorsRoot.currentStateIndex].iface)
-                name: app.interfaceToIcon(sensorsRoot.shownInterfaces[sensorsRoot.currentStateIndex].iface)
+                name: app.interfacesToIcon([sensorsRoot.shownInterfaces[sensorsRoot.currentStateIndex].iface])
             }
 
             ColumnLayout {
@@ -358,6 +388,13 @@ Item {
             property var device: null
             property var deviceClass: null
 
+            readonly property var percentageStateType: deviceClass.stateTypes.findByName("percentage");
+            readonly property var percentageState: percentageStateType ? device.states.getState(percentageStateType.id) : null
+            readonly property var stateStateType: deviceClass.stateTypes.findByName("state");
+            readonly property var stateState: stateStateType ? device.states.getState(stateStateType.id) : null
+            readonly property var intermediateStateType: deviceClass.stateTypes.findByName("intermediatePosition");
+            readonly property var intermediateState: stateStateType ? device.states.getState(intermediateStateType.id) : null
+
             ItemDelegate {
                 Layout.preferredWidth: app.iconSize
                 Layout.preferredHeight: width
@@ -366,7 +403,7 @@ Item {
                 padding: 0; topPadding: 0; bottomPadding: 0
                 contentItem: ColorIcon {
                     name: "../images/up.svg"
-                    color: app.guhAccent
+                    color: (percentageState && percentageState.value === 0) || (stateState && stateState.value === "open") ? app.guhAccent : keyColor
                 }
                 onClicked: {
                     var deviceClass = Engine.deviceManager.deviceClasses.getDeviceClass(device.deviceClassId);
@@ -380,11 +417,9 @@ Item {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 visible: deviceClass.interfaces.indexOf("extendedclosable") >= 0
-                readonly property var percentageStateType: deviceClass.stateTypes.findByName("percentage");
-                readonly property var percentateState: device.states.getState(percentageStateType.id)
                 from: 0
                 to: 100
-                value: percentateState.value
+                value: percentageState.value
             }
             Item {
                 Layout.fillWidth: true
@@ -400,7 +435,7 @@ Item {
                 padding: 0; topPadding: 0; bottomPadding: 0
                 contentItem: ColorIcon {
                     name: "../images/down.svg"
-                    color: app.guhAccent
+                    color: (percentageState && percentageState.value === 100) || (stateState && stateState.value === "closed") ? app.guhAccent : keyColor
                 }
                 onClicked: {
                     var deviceClass = Engine.deviceManager.deviceClasses.getDeviceClass(device.deviceClassId);

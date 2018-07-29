@@ -183,78 +183,67 @@ ApplicationWindow {
     }
 
     function interfacesToIcon(interfaces) {
-        for (var i = 0; i < interfaces.length; i++) {
-            var icon = interfaceToIcon(interfaces[i]);
-            if (icon !== "") {
-                return icon;
-            }
-        }
-        return Qt.resolvedUrl("images/select-none.svg")
-    }
-
-    function interfaceToIcon(name) {
-        switch (name) {
-        case "light":
-        case "colorlight":
-        case "dimmablelight":
-            return Qt.resolvedUrl("images/light-on.svg")
-        case "sensor":
-            return Qt.resolvedUrl("images/sensors.svg")
-        case "temperaturesensor":
-            return Qt.resolvedUrl("images/sensors/temperature.svg")
-        case "humiditysensor":
-            return Qt.resolvedUrl("images/sensors/humidity.svg")
-        case "moisturesensor":
-            return Qt.resolvedUrl("images/sensors/moisture.svg")
-        case "lightsensor":
-            return Qt.resolvedUrl("images/sensors/light.svg")
-        case "conductivitysensor":
-            return Qt.resolvedUrl("images/sensors/conductivity.svg")
-        case "pressuresensor":
-            return Qt.resolvedUrl("images/sensors/pressure.svg")
-        case "media":
-        case "mediacontroller":
-            return Qt.resolvedUrl("images/mediaplayer-app-symbolic.svg")
-        case "button":
-        case "longpressbutton":
-        case "simplemultibutton":
-        case "longpressmultibutton":
-            return Qt.resolvedUrl("images/system-shutdown.svg")
-        case "weather":
-            return Qt.resolvedUrl("images/weather-app-symbolic.svg")
-        case "temperaturesensor":
-            return Qt.resolvedUrl("images/sensors/temperature.svg")
-        case "humiditysensor":
-            return Qt.resolvedUrl("images/sensors/humidity.svg")
-        case "gateway":
-            return Qt.resolvedUrl("images/network-wired-symbolic.svg")
-        case "notifications":
-            return Qt.resolvedUrl("images/notification.svg")
-        case "connectable":
-            return Qt.resolvedUrl("images/stock_link.svg")
-        case "inputtrigger":
-            return Qt.resolvedUrl("images/attention.svg")
-        case "outputtrigger":
-            return Qt.resolvedUrl("images/send.svg")
-        case "shutter":
-        case "extendedshutter":
-            return Qt.resolvedUrl("images/DeviceIconRollerShutter.svg")
-        case "blind":
-        case "extendedblind":
-            return Qt.resolvedUrl("images/DeviceIconBlind.svg")
-        case "garagegate":
+        if (interfaces.indexOf("garagegate") >= 0) {
             return Qt.resolvedUrl("images/shutter/shutter-100.svg")
-        case "extendedawning":
+        } else if (interfaces.indexOf("light") >= 0
+                   || interfaces.indexOf("colorlight") >= 0
+                   || interfaces.indexOf("dimmablelight") >= 0) {
+            return Qt.resolvedUrl("images/light-on.svg")
+        } else if (interfaces.indexOf("sensor") >= 0) {
+            return Qt.resolvedUrl("images/sensors.svg")
+        } else if (interfaces.indexOf("temperaturesensor") >= 0) {
+            return Qt.resolvedUrl("images/sensors/temperature.svg")
+        } else if (interfaces.indexOf("humiditysensor") >= 0) {
+            return Qt.resolvedUrl("images/sensors/humidity.svg")
+        } else if (interfaces.indexOf("moisturesensor") >= 0) {
+            return Qt.resolvedUrl("images/sensors/moisture.svg")
+        } else if (interfaces.indexOf("lightsensor") >= 0) {
+            return Qt.resolvedUrl("images/sensors/light.svg")
+        } else if (interfaces.indexOf("conductivitysensor") >= 0) {
+            return Qt.resolvedUrl("images/sensors/conductivity.svg")
+        } else if (interfaces.indexOf("pressuresensor") >= 0) {
+            return Qt.resolvedUrl("images/sensors/pressure.svg")
+        } else if (interfaces.indexOf("media") >= 0
+                   || interfaces.indexOf("mediacontroller") >= 0) {
+            return Qt.resolvedUrl("images/mediaplayer-app-symbolic.svg")
+        } else if (interfaces.indexOf("button") >= 0
+                   || interfaces.indexOf("longpressbutton") >= 0
+                   || interfaces.indexOf("simplemultibutton") >= 0
+                   || interfaces.indexOf("longpressmultibutton") >= 0) {
+            return Qt.resolvedUrl("images/system-shutdown.svg")
+        } else if (interfaces.indexOf("weather") >= 0) {
+            return Qt.resolvedUrl("images/weather-app-symbolic.svg")
+        } else if (interfaces.indexOf("temperaturesensor") >= 0) {
+            return Qt.resolvedUrl("images/sensors/temperature.svg")
+        } else if (interfaces.indexOf("humiditysensor") >= 0) {
+            return Qt.resolvedUrl("images/sensors/humidity.svg")
+        } else if (interfaces.indexOf("gateway") >= 0) {
+            return Qt.resolvedUrl("images/network-wired-symbolic.svg")
+        } else if (interfaces.indexOf("notifications") >= 0) {
+            return Qt.resolvedUrl("images/notification.svg")
+        } else if (interfaces.indexOf("connectable") >= 0) {
+            return Qt.resolvedUrl("images/stock_link.svg")
+        } else if (interfaces.indexOf("inputtrigger") >= 0) {
+            return Qt.resolvedUrl("images/attention.svg")
+        } else if (interfaces.indexOf("outputtrigger") >= 0) {
+            return Qt.resolvedUrl("images/send.svg")
+        } else if (interfaces.indexOf("shutter") >= 0
+                   || interfaces.indexOf("extendedshutter") >= 0) {
+            return Qt.resolvedUrl("images/DeviceIconRollerShutter.svg")
+        } else if (interfaces.indexOf("blind") >= 0
+                   || interfaces.indexOf("extendedblind") >= 0) {
+            return Qt.resolvedUrl("images/DeviceIconBlind.svg")
+        } else if (interfaces.indexOf("awning") >= 0
+                   || interfaces.indexOf("extendedawning") >= 0) {
             return Qt.resolvedUrl("images/awning/awning-100.svg")
-        case "battery":
+        } else if (interfaces.indexOf("battery") >= 0) {
             return Qt.resolvedUrl("images/battery/battery-050.svg")
-        case "uncategorized":
+        } else if (interfaces.indexOf("uncategorized") >= 0) {
             return Qt.resolvedUrl("images/select-none.svg")
-        case "simpleclosable":
+        } else if (interfaces.indexOf("simpleclosable") >= 0) {
             return Qt.resolvedUrl("images/sort-listitem.svg")
-        default:
-            console.warn("InterfaceToIcon: Unhandled interface", name)
         }
+        console.warn("InterfaceToIcon: Unhandled interface", name)
         return "";
     }
 

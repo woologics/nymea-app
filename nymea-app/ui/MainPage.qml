@@ -63,7 +63,11 @@ Page {
                 opacity: Engine.deviceManager.fetchingData ? 0 : 1
                 Behavior on opacity { NumberAnimation { duration: 300 } }
 
+                property bool initialized: false
                 onCurrentIndexChanged: {
+                    if (!initialized) {
+                        return;
+                    }
                     settings.currentMainViewIndex = currentIndex
                 }
 
@@ -75,6 +79,7 @@ Page {
                         settings.currentMainViewIndex = swipeView.count - 1;
                     }
                     swipeView.currentIndex = Qt.binding(function() { return settings.currentMainViewIndex; })
+                    initialized = true
                 }
 
                 Component {

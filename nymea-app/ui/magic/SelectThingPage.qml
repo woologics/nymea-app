@@ -45,7 +45,7 @@ Page {
             delegate: MeaListItemDelegate {
                 width: parent.width
                 text: root.selectInterface ? model.displayName : model.name
-                iconName: root.selectInterface ? app.interfaceToIcon(model.name) : app.interfacesToIcon(model.interfaces)
+                iconName: root.selectInterface ? app.interfacesToIcon([model.name]) : app.interfacesToIcon(model.interfaces)
                 onClicked: {
                     if (root.selectInterface) {
                         root.interfaceSelected(interfacesProxy.get(index).name)

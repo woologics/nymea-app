@@ -53,7 +53,7 @@ CustomViewBase {
             Layout.rightMargin: app.margins
             spacing: app.margins
             ColorIcon {
-                name: app.interfaceToIcon(root.interfaceName)
+                name: app.interfacesToIcon([root.interfaceName])
                 height: app.iconSize
                 width: height
                 color: app.interfaceToColor(root.interfaceName)

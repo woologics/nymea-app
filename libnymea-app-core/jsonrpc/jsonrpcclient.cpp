@@ -276,7 +276,7 @@ void JsonRpcClient::dataReceived(const QByteArray &data)
     QJsonParseError error;
     QJsonDocument jsonDoc = QJsonDocument::fromJson(m_receiveBuffer.left(splitIndex), &error);
     if (error.error != QJsonParseError::NoError) {
-//        qWarning() << "Could not parse json data from nymea" << m_receiveBuffer.left(splitIndex) << error.errorString();
+        qWarning() << "Could not parse json data from nymea" << m_receiveBuffer.left(splitIndex) << error.errorString();
         return;
     }
 //    qDebug() << "received response" << qUtf8Printable(jsonDoc.toJson(QJsonDocument::Indented));

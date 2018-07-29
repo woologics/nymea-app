@@ -8,7 +8,7 @@ import "../components"
 MainPageTile {
     id: root
     text: interfaceToString(model.name).toUpperCase()
-    iconName: interfaceToIcon(model.name)
+    iconName: interfacesToIcon([model.name])
     iconColor: app.guhAccent
     disconnected: devicesSubProxyConnectables.count > 0
     batteryCritical: devicesSubProxyBattery.count > 0
