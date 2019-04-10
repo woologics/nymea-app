@@ -17,19 +17,22 @@ environment:
 
 apps:
   nymea-app:
-    command: desktop-launch nymea-app
+    daemon: simple
+    restart-condition: always
+    command: nymea-app --fullscreen
     desktop: usr/share/applications/nymea-app.desktop
     environment:
       QT_IM_MODULE: qtvirtualkeyboard
-      __EGL_VENDOR_LIBRARY_DIRS: $SNAP/etc/glvnd/egl_vendor.d:$SNAP/usr/share/glvnd/egl_vendor.d
+#      __EGL_VENDOR_LIBRARY_DIRS: $SNAP/etc/glvnd/egl_vendor.d:$SNAP/usr/share/glvnd/egl_vendor.d
       QT_PLUGIN_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/qt5/plugins
       QML2_IMPORT_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/qt5/qml
+      LIBGL_DRIVERS_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
     plugs:
     - avahi-observe
     - bluez
     - network
     - opengl
-    - x11
+    - wayland
 
 #  nymea-app-webgl:
 #    command: env PATH=$PATH:$SNAP/bin qt5-launch nymea-app -platform webgl:port=8080
@@ -72,3 +75,4 @@ parts:
       - libavahi-common3
       - qml-module-qt-labs-folderlistmodel
       - qtvirtualkeyboard-plugin
+      - qtwayland5

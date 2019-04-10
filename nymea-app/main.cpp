@@ -94,6 +94,12 @@ int main(int argc, char *argv[])
 
     qDebug() << "Running on" << QSysInfo::machineHostName() << QSysInfo::prettyProductName() << QSysInfo::productType() << QSysInfo::productVersion();
 
+    QCommandLineParser parser;
+    QCommandLineOption fullscreenOption(QStringList() << "f" << "fullscreen", "Run nymea:app in fullscreen mode.");
+    parser.addOption(fullscreenOption);
+
+    parser.process(application);
+
     registerQmlTypes();
 
     QQmlApplicationEngine *engine = new QQmlApplicationEngine();
@@ -112,6 +118,8 @@ int main(int argc, char *argv[])
 #endif
     engine->rootContext()->setContextProperty("appVersion", APP_VERSION);
     engine->rootContext()->setContextProperty("qtVersion", QT_VERSION_STR);
+
+    engine->rootContext()->setContextProperty("fullscreenOverride", parser.isSet(fullscreenOption));
 
     StyleController styleController;
     engine->rootContext()->setContextProperty("styleController", &styleController);
