@@ -31,7 +31,9 @@ public:
     ConnectionState connectionState() const override;
     void sendData(const QByteArray &data) override;
 
+#ifndef QT_NO_SSL
     void ignoreSslErrors(const QList<QSslError> &errors) override;
+#endif
 private:
     QUrl m_url;
     AWSClient *m_awsClient = nullptr;

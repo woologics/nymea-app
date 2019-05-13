@@ -17,6 +17,7 @@
 
 NymeaConnection::NymeaConnection(QObject *parent) : QObject(parent)
 {
+#ifndef QT_NO_BEARERMANAGEMENT
     m_networkConfigManager = new QNetworkConfigurationManager(this);
 
     QObject::connect(m_networkConfigManager, &QNetworkConfigurationManager::configurationAdded, this, [this](const QNetworkConfiguration &config){
@@ -29,6 +30,7 @@ NymeaConnection::NymeaConnection(QObject *parent) : QObject(parent)
 //        qDebug() << "Network configuration removed:" << config.name() << config.bearerTypeName() << config.purpose();
         updateActiveBearers();
     });
+#endif
 
     QGuiApplication *app = static_cast<QGuiApplication*>(QGuiApplication::instance());
     QObject::connect(app, &QGuiApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
@@ -149,6 +151,7 @@ void NymeaConnection::onSslErrors(const QList<QSslError> &errors)
     NymeaTransportInterface *transport = qobject_cast<NymeaTransportInterface*>(sender());
 
     qDebug() << "SSL errors for url:" << transport->url();
+#ifndef QT_NO_SSL
     QList<QSslError> ignoredErrors;
     foreach (const QSslError &error, errors) {
         qDebug() << error.errorString();
@@ -219,6 +222,7 @@ void NymeaConnection::onSslErrors(const QList<QSslError> &errors)
         // unless we've handled all the errors or the websocket will ignore unhandled errors too...
         transport->ignoreSslErrors(ignoredErrors);
     }
+#endif
 }
 
 void NymeaConnection::onError(QAbstractSocket::SocketError error)
@@ -383,18 +387,22 @@ void NymeaConnection::onDisconnected()
 void NymeaConnection::updateActiveBearers()
 {
     NymeaConnection::BearerTypes availableBearerTypes;
+#ifndef QT_NO_BEARERMANAGEMENT
     QList<QNetworkConfiguration> configs = m_networkConfigManager->allConfigurations(QNetworkConfiguration::Active);
 //    qDebug() << "Network configuations:" << configs.count();
     foreach (const QNetworkConfiguration &config, configs) {
 //        qDebug() << "Candidate network config:" << config.name() << config.bearerTypeFamily() << config.bearerTypeName();
 
         // NOTE: iOS doesn't correctly report bearer types. It'll be Unknown all the time. Let's hardcode it to WiFi for that...
-#if defined(Q_OS_IOS)
+  #if defined(Q_OS_IOS)
         availableBearerTypes.setFlag(NymeaConnection::BearerTypeWiFi);
-#else
+  #else
         availableBearerTypes.setFlag(qBearerTypeToNymeaBearerType(config.bearerType()));
-#endif
+  #endif
     }
+#else
+    availableBearerTypes.setFlag(NymeaConnection::BearerTypeWiFi);
+#endif
 //    qDebug() << "Available bearers:" << availableBearerTypes;
     if (m_availableBearerTypes != availableBearerTypes) {
         qDebug() << "Available Bearer Types changed:" << availableBearerTypes;
@@ -553,6 +561,7 @@ bool NymeaConnection::connectInternal(Connection *connection)
     QObject::connect(newTransport, &NymeaTransportInterface::dataReady, this, &NymeaConnection::dataAvailable);
 
     // Load any certificate we might have for this url
+#ifndef QT_NO_SSL
     QByteArray pem;
     if (loadPem(connection->url(), pem)) {
         qDebug() << "Loaded SSL certificate for" << connection->url().host();
@@ -561,6 +570,7 @@ bool NymeaConnection::connectInternal(Connection *connection)
         expectedSslErrors.append(QSslError(QSslError::SelfSignedCertificate, QSslCertificate(pem)));
         newTransport->ignoreSslErrors(expectedSslErrors);
     }
+#endif
 
     m_transportCandidates.insert(newTransport, connection);
     qDebug() << "Connecting to:" << connection->url() << newTransport << m_transportCandidates.value(newTransport);

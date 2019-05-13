@@ -8,6 +8,7 @@
 #include <QSettings>
 #include <QUuid>
 #include <QTimer>
+#include <QDebug>
 
 #include "sigv4utils.h"
 

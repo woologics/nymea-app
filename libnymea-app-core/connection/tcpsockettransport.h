@@ -5,6 +5,7 @@
 
 #include <QObject>
 #include <QSslSocket>
+#include <QTcpSocket>
 #include <QUrl>
 
 class TcpSocketTransportFactory: public NymeaTransportInterfaceFactory
@@ -25,7 +26,9 @@ public:
     ConnectionState connectionState() const override;
     void disconnect() override;
     void sendData(const QByteArray &data) override;
+#ifndef QT_NO_SSL
     void ignoreSslErrors(const QList<QSslError> &errors) override;
+#endif
 
 private slots:
     void onConnected();
@@ -34,7 +37,11 @@ private slots:
     void onSocketStateChanged(const QAbstractSocket::SocketState &state);
 
 private:
+#ifndef QT_NO_SSL
     QSslSocket m_socket;
+#else
+    QTcpSocket m_socket;
+#endif
     QUrl m_url;
 };
 
