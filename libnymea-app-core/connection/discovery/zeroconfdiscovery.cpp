@@ -39,6 +39,7 @@ ZeroconfDiscovery::~ZeroconfDiscovery()
 bool ZeroconfDiscovery::available() const
 {
 #ifdef WITH_ZEROCONF
+    fdfsdfs
     return m_zeroconfJsonRPC->browserExists() || m_zeroconfWebSocket->browserExists();
 #else
     return false;

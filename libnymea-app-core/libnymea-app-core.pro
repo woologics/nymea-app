@@ -3,7 +3,12 @@ TEMPLATE = lib
 CONFIG += staticlib
 
 include(../config.pri)
-!win32: {
+without_zeroconf: {
+    message("ZeroConf support disabled")
+}
+
+!win32:!without_zeroconf: {
+    message("ZeroConf support enabled")
     # To enable this on Windows we'd need to install Bonjour
     # https://support.apple.com/kb/DL999
     DEFINES += QZEROCONF_STATIC
