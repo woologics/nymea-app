@@ -1,0 +1,2 @@
+module io.guh.nymea
+plugin nymea-client

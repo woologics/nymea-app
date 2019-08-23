@@ -86,9 +86,7 @@ static QObject* awsClientProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
     return AWSClient::instance();
 }
 
-void registerQmlTypes() {
-
-    const char uri[] = "Nymea";
+void registerQmlTypes(const char* uri = "Nymea") {
 
     qmlRegisterType<Engine>(uri, 1, 0, "Engine");
 

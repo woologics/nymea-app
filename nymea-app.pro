@@ -2,9 +2,10 @@ include(config.pri)
 message("APP_VERSION: $${APP_VERSION} ($${APP_REVISION})")
 TEMPLATE=subdirs
 
-SUBDIRS = libnymea-common libnymea-app-core nymea-app
+SUBDIRS = libnymea-common libnymea-app-core nymea-app plugin
 libnymea-app-core.depends = libnymea-common
 nymea-app.depends = libnymea-app-core
+plugin.depends = libnymea-app-core
 
 #QML_IMPORT_PATH=/home/micha/Develop/Qt/5.11.0/gcc_64/qml/
 
