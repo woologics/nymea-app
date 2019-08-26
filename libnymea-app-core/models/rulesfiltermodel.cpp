@@ -28,6 +28,7 @@ void RulesFilterModel::setRules(Rules *rules)
         invalidateFilter();
         emit countChanged();
         sort(0);
+        connect(rules, &Rules::countChanged, this, &RulesFilterModel::countChanged);
     }
 }
 
