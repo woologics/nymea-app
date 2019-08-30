@@ -19,17 +19,26 @@ Page {
     }
 
     function addRule() {
-        var newRule = engine.ruleManager.createNewRule();
-        d.editRulePage = pageStack.push(Qt.resolvedUrl("magic/EditRulePage.qml"), {rule: newRule });
-        d.editRulePage.StackView.onRemoved.connect(function() {
-            newRule.destroy();
+        d.editRulePage = pageStack.push(Qt.resolvedUrl("magic/NewThingMagicPage.qml"))
+        d.editRulePage.done.connect(function() {
+            print("add rule done")
+            pageStack.pop(root);
         })
-        d.editRulePage.onAccept.connect(function() {
-            d.editRulePage.busy = true;
-            engine.ruleManager.addRule(d.editRulePage.rule);
-        })
-        d.editRulePage.onCancel.connect(function() {
-            pageStack.pop();
+
+        d.editRulePage.manualCreation.connect(function() {
+            pageStack.pop(root);
+            var newRule = engine.ruleManager.createNewRule();
+            d.editRulePage = pageStack.push(Qt.resolvedUrl("magic/EditRulePage.qml"), {rule: newRule });
+            d.editRulePage.StackView.onRemoved.connect(function() {
+                newRule.destroy();
+            })
+            d.editRulePage.onAccept.connect(function() {
+                d.editRulePage.busy = true;
+                engine.ruleManager.addRule(d.editRulePage.rule);
+            })
+            d.editRulePage.onCancel.connect(function() {
+                pageStack.pop();
+            })
         })
     }
 
@@ -41,20 +50,19 @@ Page {
     Connections {
         target: engine.ruleManager
         onAddRuleReply: {
-            d.editRulePage.busy = false;
             if (ruleError == "RuleErrorNoError") {
 //                print("should tag rule now:", d.editRulePage.rule.id, d.editRulePage.ruleIcon, d.editRulePage.ruleColor)
-                engine.tagsManager.tagRule(ruleId, "color", d.editRulePage.ruleColor)
-                engine.tagsManager.tagRule(ruleId, "icon", d.editRulePage.ruleIcon)
-                pageStack.pop();
+//                engine.tagsManager.tagRule(ruleId, "color", d.editRulePage.ruleColor)
+//                engine.tagsManager.tagRule(ruleId, "icon", d.editRulePage.ruleIcon)
+                pageStack.pop(root);
             } else {
                 var popup = errorDialog.createObject(app, {errorCode: ruleError })
                 popup.open();
             }
+            d.editRulePage.busy = false;
         }
 
         onEditRuleReply: {
-            d.editRulePage.busy = false;
             if (ruleError == "RuleErrorNoError") {
 //                print("should tag rule now:", d.editRulePage.ruleIcon, d.editRulePage.ruleColor)
                 engine.tagsManager.tagRule(d.editRulePage.rule.id, "color", d.editRulePage.ruleColor)
@@ -64,6 +72,7 @@ Page {
                 var popup = errorDialog.createObject(app, {errorCode: ruleError })
                 popup.open();
             }
+            d.editRulePage.busy = false;
         }
     }
 
