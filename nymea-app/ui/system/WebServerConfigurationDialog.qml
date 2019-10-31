@@ -98,7 +98,10 @@ Dialog {
             }
             TextField {
                 text: root.serverConfiguration ? root.serverConfiguration.publicFolder : ""
-                onEditingFinished: root.serverConfiguration.publicFolder = text
+                onEditingFinished: {
+                    print("setting public folder", text)
+                    root.serverConfiguration.publicFolder = text
+                }
             }
         }
     }
