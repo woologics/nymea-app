@@ -112,7 +112,25 @@ ios: {
     OBJECTIVE_SOURCES += $$PWD/../packaging/ios/pushnotifications.mm \
                          $$PWD/../packaging/ios/platformhelperios.mm
 
-    LIBS += -framework "UserNotifications"
+    # Add Firebase SDK
+    QMAKE_LFLAGS += -ObjC $(inherited)
+    firebase_files.files += $$files(../packaging/ios/GoogleService-Info.plist)
+    QMAKE_BUNDLE_DATA += firebase_files
+    INCLUDEPATH += ../3rdParty/ios/
+    LIBS += -F$$PWD/../3rdParty/ios/Firebase/FirebaseAnalytics/ \
+            -F$$PWD/../3rdParty/ios/Firebase/FirebaseMessaging
+    LIBS += -framework "FirebaseAnalytics" \
+            -framework "FirebaseMessaging" \
+            -framework "GoogleUtilities" \
+            -framework "Protobuf" \
+            -framework "FirebaseCore" \
+            -framework "GoogleAppMeasurement" \
+            -framework "FirebaseInstanceID" \
+            -framework "FirebaseInstallations" \
+            -framework "PromisesObjC" \
+            -framework "nanopb" \
+            -framework "StoreKit" \
+            -framework "UserNotifications"
 
     QMAKE_TARGET_BUNDLE_PREFIX = io.guh
     QMAKE_BUNDLE = nymeaApp
@@ -124,7 +142,8 @@ ios: {
     QMAKE_SUBSTITUTES += plist
     QMAKE_INFO_PLIST = $$OUT_PWD/Info.plist
     OTHER_FILES += ../packaging/ios/Info.plist.in \
-                   ../packaging/ios/pushnotifications.entitlements
+                   ../packaging/ios/pushnotifications.entitlements \
+                   ../packaging/ios/GoogleService-Info.plist
 
     ios_icon_files.files += $$files(../packaging/ios/AppIcon*.png)
     ios_launch_images.files += $$files(../packaging/ios/LaunchImage*.png) ../packaging/ios/LaunchScreen1.xib

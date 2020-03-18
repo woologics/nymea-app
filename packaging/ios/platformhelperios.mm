@@ -6,7 +6,6 @@
 #include <QtDebug>
 #include "platformintegration/ios/platformhelperios.h"
 
-
 QString PlatformHelperIOS::readKeyChainEntry(const QString &service, const QString &key)
 {
     NSDictionary *const query = @{
@@ -102,6 +101,7 @@ void PlatformHelperIOS::generateNotificationFeedback()
 
 void PlatformHelperIOS::setTopPanelColorInternal(const QColor &color)
 {
+    return;
     UIView *statusBar = (UIView *)[[UIApplication sharedApplication] valueForKey:@"statusBar"];
     statusBar.backgroundColor = [UIColor colorWithRed:color.redF() green:color.greenF() blue:color.blueF() alpha:color.alphaF()];
 
