@@ -166,8 +166,10 @@ Page {
             iconName: app.interfacesToIcon(deviceClass.interfaces)
             prominentSubText: false
             wrapTexts: false
+            secondaryIconName: "../images/info.svg"
+            secondaryIconClickable: true
 
-            property var deviceClass: deviceClassesProxy.get(index)
+            property DeviceClass deviceClass: deviceClassesProxy.get(index)
 
             onClicked: {
                 var page = pageStack.push(Qt.resolvedUrl("SetupWizard.qml"), {deviceClass: deviceClassesProxy.get(index)});
@@ -175,6 +177,12 @@ Page {
                     pageStack.pop(root, StackView.Immediate);
                     pageStack.pop();
                 })
+            }
+
+            onSecondaryIconClicked: {
+                print("clicked", deviceClass.pluginId)
+                var plugin = engine.deviceManager.plugins.getPlugin(deviceClass.pluginId)
+                pageStack.push(Qt.resolvedUrl("ThingHelpPage.qml"), {plugin: plugin});
             }
         }
     }
