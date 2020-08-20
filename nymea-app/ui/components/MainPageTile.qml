@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 *
-* Copyright 2013 - 2020, nymea GmbH
+* Copyright 2013 - 2015, nymea GmbH
 * Contact: contact@nymea.io
 *
 * This file is part of nymea.
@@ -52,8 +52,12 @@ Item {
     Pane {
         anchors.fill: parent
         anchors.margins: app.margins / 2
-        Material.elevation: 1
+        //Material.elevation: 1
         padding: 0
+        background: Rectangle {
+                color: "white"
+                radius: 15
+        }
 
         Image {
             id: background
@@ -61,6 +65,7 @@ Item {
             anchors.margins: 1
             z: -1
             fillMode: Image.PreserveAspectCrop
+
 //            horizontalAlignment: Image.AlignTop
 //            opacity: .5
 //            Rectangle {
@@ -69,6 +74,7 @@ Item {
 //                opacity: .5
 //            }
         }
+
 
         contentItem: ItemDelegate {
             padding: 0; topPadding: 0; bottomPadding: 0
@@ -88,7 +94,7 @@ Item {
                         ColorIcon {
                             id: colorIcon
                             anchors.centerIn: parent
-                            height: app.iconSize * 1.3
+                            height: app.iconSize * 1.5
                             width: height
                             ColorIcon {
                                 id: fallbackIcon
@@ -128,17 +134,20 @@ Item {
                     Rectangle {
                         anchors.fill: parent
                         color: Material.background
+                        radius: 15
                     }
 
                     Rectangle {
                         anchors.fill: parent
                         color: Material.foreground
                         opacity: 0.05
+                        radius: 15 //that would work
                     }
                 }
             }
         }
-    }
+
+   }
 
     Row {
         id: quickAlertPane

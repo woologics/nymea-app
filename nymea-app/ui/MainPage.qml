@@ -89,9 +89,9 @@ Page {
     // has troubles dealing with that. For now, let's manually fill it and use a timer to initialize the currentIndex.
     Component.onCompleted: {
         // Fill SwipeView (The 2 static views things and scenes will already be there).
-        if (engine.jsonRpcClient.ensureServerVersion(1.6)) {
-            swipeView.insertItem(0, favoritesViewComponent.createObject(swipeView))
-        }
+//        if (engine.jsonRpcClient.ensureServerVersion(1.6)) {
+//            swipeView.insertItem(0, favoritesViewComponent.createObject(swipeView))
+//        }
         var experienceView = null;
         if (styleController.currentExperience != "Default") {
             experienceView = experienceViewComponent.createObject(swipeView, {source: "experiences/" + styleController.currentExperience + "/Main.qml" });
@@ -104,14 +104,14 @@ Page {
         if (experienceView) {
             tabEntryComponent.createObject(tabBar, {text: experienceView.title, iconSource: experienceView.icon, pageIndex: pi++})
         }
-        if (engine.jsonRpcClient.ensureServerVersion(1.6)) {
-            tabEntryComponent.createObject(tabBar, {text: qsTr("Favorites"), iconSource: "../images/starred.svg", pageIndex: pi++})
-        }
+//        if (engine.jsonRpcClient.ensureServerVersion(1.6)) {
+//            tabEntryComponent.createObject(tabBar, {text: qsTr("Favorites"), iconSource: "../images/starred.svg", pageIndex: pi++})
+//        }
         tabEntryComponent.createObject(tabBar, {text: qsTr("Things"), iconSource: "../images/share.svg", pageIndex: pi++})
-        tabEntryComponent.createObject(tabBar, {text: qsTr("Scenes"), iconSource: "../images/slideshow.svg", pageIndex: pi++})
-        if (engine.jsonRpcClient.ensureServerVersion(1.6)) {
-            tabEntryComponent.createObject(tabBar, {text: qsTr("Groups"), iconSource: "../images/view-grid-symbolic.svg", pageIndex: pi++})
-        }
+//        tabEntryComponent.createObject(tabBar, {text: qsTr("Scenes"), iconSource: "../images/slideshow.svg", pageIndex: pi++})
+//        if (engine.jsonRpcClient.ensureServerVersion(1.6)) {
+//            tabEntryComponent.createObject(tabBar, {text: qsTr("Groups"), iconSource: "../images/view-grid-symbolic.svg", pageIndex: pi++})
+//        }
 
         root.tabsReady = true
     }
