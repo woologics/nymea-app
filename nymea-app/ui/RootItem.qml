@@ -36,6 +36,7 @@ import Qt.labs.settings 1.0
 import Nymea 1.0
 import "components"
 import "connection"
+import "wizard"
 
 Item {
     id: root
@@ -71,13 +72,7 @@ Item {
             remove(index);
             settings.tabCount--;
             tabbar.currentIndex = swipeView.currentIndex
-            orphanedSettings.lastConnectedHost = ""
         }
-    }
-    Settings {
-        id: orphanedSettings
-        category: "tabSettings" + tabModel.count
-        property string lastConnectedHost
     }
 
     ColumnLayout {
@@ -132,8 +127,14 @@ Item {
                         initialItem: Page {}
                     }
 
+                    Wizard {
+                        id: wizard
+                        anchors.fill: parent
+                    }
+
                     Component.onCompleted: {
                         setupPushNotifications();
+                        wizard.startWizard(["NymeaWelcomePage", "NymeaCoreSelectionPage", "FinalPage"])
                         if (autoConnectHost.length > 0) {
                             var host = discovery.nymeaHosts.createLanHost("Manual connection", autoConnectHost);
                             engine.jsonRpcClient.connectToHost(host)

@@ -223,5 +223,14 @@
         <file>ui/components/BatteryStatusIcon.qml</file>
         <file>ui/components/SetupStatusIcon.qml</file>
         <file>ui/components/UpdateStatusIcon.qml</file>
+        <file>ui/wizard/Wizard.qml</file>
+        <file>ui/wizard/pages/NymeaWelcomePage.qml</file>
+        <file>ui/wizard/WizardPageBase.qml</file>
+        <file>ui/wizard/pages/NymeaCoreSelectionPage.qml</file>
+        <file>ui/wizard/pages/RaspberryPiGetImagePage.qml</file>
+        <file>ui/wizard/pages/NetworkTypeSelectionPage.qml</file>
+        <file>ui/wizard/pages/RaspberryPiWiFiInstructionsPage.qml</file>
+        <file>ui/wizard/pages/BluetootSetupPage.qml</file>
+        <file>ui/wizard/pages/FinalPage.qml</file>
     </qresource>
 </RCC>
