@@ -62,7 +62,7 @@ private:
     bool m_connected;
     QString m_statusText;
 
-    void setConnected(const bool &connected);
+    void setConnected(bool connected);
 
 protected:
     QLowEnergyController *controller();

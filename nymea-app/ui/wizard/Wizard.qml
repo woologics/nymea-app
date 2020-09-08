@@ -53,7 +53,8 @@ StackView {
 
                 var pageName = d.passedPages.slice(-1)[0]
                 d.queuedPages.unshift(pageName);
-                pageStack.pop();
+                print("* popping page")
+                wizard.pop();
             })
             page.complete.connect(function(){
                 print("Wizard: Page complete")

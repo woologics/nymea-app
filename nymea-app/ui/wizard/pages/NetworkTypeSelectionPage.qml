@@ -29,5 +29,15 @@ WizardPageBase {
                 text: qsTr("Wired")
             }
         }
+        Pane {
+            Layout.fillWidth: true
+            contentItem: Label {
+                text: qsTr("Back")
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: root.back()
+            }
+        }
     }
 }
