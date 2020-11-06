@@ -92,10 +92,12 @@ void BluetoothDevice::disconnectDevice()
     m_controller->disconnectFromDevice();
 }
 
-void BluetoothDevice::setConnected(const bool &connected)
+void BluetoothDevice::setConnected(bool connected)
 {
-    m_connected = connected;
-    emit connectedChanged();
+    if (m_connected != connected) {
+        m_connected = connected;
+        emit connectedChanged();
+    }
 }
 
 void BluetoothDevice::setStatusText(const QString &statusText)

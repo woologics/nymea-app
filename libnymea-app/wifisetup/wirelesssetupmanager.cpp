@@ -565,20 +565,25 @@ void WirelessSetupManager::processWifiResponse(const QVariantMap &response)
         QVariantMap currentConnection = response.value("p").toMap();;
 
         // Find current network
-        m_currentConnection = nullptr;
+        WirelessAccessPoint *tmp = nullptr;
         QString macAddress = currentConnection.value("m").toString();
         foreach (WirelessAccessPoint *accessPoint, m_accessPoints->wirelessAccessPoints()) {
             if (accessPoint->macAddress() == macAddress) {
                 // Set the current network
-                m_currentConnection = accessPoint;
+                tmp = accessPoint;
                 accessPoint->setHostAddress(currentConnection.value("i").toString());
             }
         }
-        qDebug() << "current connection is:" << m_currentConnection;
-        emit currentConnectionChanged();
+        if (m_currentConnection != tmp) {
+            m_currentConnection = tmp;
+            qDebug() << "current connection is:" << m_currentConnection;
+            emit currentConnectionChanged();
+        }
 
-        m_initialized = true;
-        emit initializedChanged();
+        if (!m_initialized) {
+            m_initialized = true;
+            emit initializedChanged();
+        }
 
         break;
     }
